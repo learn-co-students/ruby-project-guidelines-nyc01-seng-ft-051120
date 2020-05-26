@@ -1,3 +1,9 @@
+require 'rake'
+require 'active_record'
+require 'yaml/store'
+require 'ostruct'
+require 'date'
+
 require 'bundler'
 Bundler.require
 
