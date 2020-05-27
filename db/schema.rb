@@ -13,14 +13,12 @@
 ActiveRecord::Schema.define(version: 20200526201150) do
 
   create_table "inventories", force: :cascade do |t|
-    t.string  "name"
     t.integer "player_id"
     t.integer "item_id"
   end
 
   create_table "items", force: :cascade do |t|
     t.string  "name"
-    t.string  "type"
     t.integer "health"
     t.integer "attack"
   end
