@@ -1,11 +1,35 @@
-class CommandLineInterface
+class CLI
 
 
     def run
-        puts "hello world"  
+        self.greeting 
         self.create_new_player
-       
-    end  
+
+        while true
+            puts "\nType 'info' to get a list of options. Say 'quit' to exit game."
+            puts "What would you like to do?"
+            input = gets.chomp
+
+            break if input == "quit" || input == "exit"
+
+            case input
+            when "info"
+                self.info
+            when "inspect"
+                self.inspect_player
+            when "delete"
+                self.delete_player
+            when "go"
+                self.enter_game
+        else
+            puts "Oops, I don't understand, try 'info' for help."
+        end
+    end
+end  
+
+    def greeting
+        puts "Welcome to Cavern of the Ice Wizard"
+    end
     # A User can create and save a Player
     def create_new_player
         puts "Please type in your player name"
@@ -15,17 +39,17 @@ class CommandLineInterface
         player = Player.new 
         player.name = name
         player.save
+        puts "    "
         puts "Welcome #{name}"
         sleep(0.25)
         puts "    "
-        #needs to return to a menu of choices( go, inspect, get item, use item, delete, quit)
-        game_options    
+        # info    
     end
 
     def name
         name = Player.last.name
     end
-    
+
     def health
         health = Player.last.health
     end
@@ -38,54 +62,26 @@ class CommandLineInterface
         player = Player.last
     end
         
-    def game_options
+    def info
         sleep(0.25)
         puts "    "
         puts "What would you like to do?"
         sleep(0.25)
         puts "    "
-        # puts "You can say 'create' to create new player"
-        # puts "You can say 'log in' to enter your player name and start a new game"
+                # future todo: puts "You can say 'create' to create new player"
+                # future todo: puts "You can say 'log in' to enter your player name and start a new game"
         puts "You can say 'inspect' to inspect your player stats"
-        puts "You can say 'delete' to delete your most recent created player"
         puts "You can say 'go' to enter the game"
+        puts "You can say 'delete' to delete your most recently created player and start over"
         sleep(0.25)
         puts "    "
-        reply = gets.chomp
-        if reply.downcase == "inspect"
-        inspect_player      
-        elsif
-            reply.downcase == "delete"
-            delete_player
-        
-        elsif
-            reply.downcase == "go"
-            enter_game
-            #ideally this would create a new instance of "Game"
-            
-        else
-            puts "oops, try again"
-            # game_options
-        end
     end
-        
 
-
-
-
-
-
-    # A User can see the Player's attributes
+    ## A User can see the Player's attributes
     def inspect_player
-        puts "type yes to see stats"
-        reply = gets.chomp
-        if reply.downcase == "yes" 
-            puts "Report:  #{name}, you have #{health} health, and #{strength} attack points"
-            game_options
-        else
-                #needs to return to a menu of choices( go, inspect, get item, delete, quit)
-            game_options
-        end
+        sleep(0.25)
+        puts "    "
+        puts "Report:  #{name}, you have #{health} health, and #{strength} attack points"            
     end
 
     def delete_player
@@ -98,11 +94,11 @@ class CommandLineInterface
             player.delete
             puts "You have deleted this player!"
             #need method for create new? or exit game?
-            run
+            
         else 
             puts "What would you like to do?"
                 #needs to return to a menu of choices( go, inspect, get item, delete, quit)
-            game_options
+            info
         end
     end
 
@@ -116,7 +112,7 @@ class CommandLineInterface
         puts "interior cave text"
         puts "  "
         puts "You see a passage and a tunnel"
-        puts "Will you enter the passage or the tunnel?"
+        puts "What would you like to do?"
         reply = gets.chomp
         if reply.downcase == "passage"
             puts "you enter the passage"
@@ -127,19 +123,33 @@ class CommandLineInterface
             puts "sorry, I didn't understand"
             puts "please type 'passage' or 'tunnel' to continue the game"
             puts "or type 'exit' to quit the game"
-            game_options
+            info
+            #need to create loop error message
         end
     end
 
-    # A User can have many items in their inventory
+    # A User can have many items in their inventory,
+    #   gets or takes item will add it to inventory
+        #   and return a message saying "you have added <item> to inventory"
+        #   and also "when you use this <item>, it will update your health by <value>
+        #   and your attack points by <value>. This item can be used only once.
+        #   After that it will no longer be in your inventory"
 
     # A User can view a list of their inventory items
 
-    # A User can select an item from inventory, to use, which will update player attributes, and also
-    # delete the item from inventory
+    # A User can use an item from inventory, which will
+    #   update player attributes, by adding health and strength value from the item, 
+    #   and also, will then delete the item from inventory
 
     def exit_game
         puts "Thank you for playing!"
         puts "Come again soon!"
     end
+
+    # def my_method; 
+    #     loop do; 
+    #         next = gets.chomp; 
+    #         return nil 
+    #         if next == "close"; <do something>; end
+
 end
