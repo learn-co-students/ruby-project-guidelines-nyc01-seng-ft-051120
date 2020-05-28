@@ -18,16 +18,23 @@ def create_new_player
     puts "Welcome #{name}"
     inspect_player
 end
+def name
+    name = Player.last.name
+end
+def health
+    health = Player.last.health
+end
+def strength
+    strength = Player.last.attack_power
+end
+
 
 # A User can see the Player's attributes
 def inspect_player
     puts "What would you like to do?"
     reply = gets.chomp
     if reply.downcase == "inspect" 
-        # self.name = name
-        # self.health = health
-        # self.attack_power = attack
-        puts "Report:attack points"
+        puts "Report:  #{name}, you have #{health} health, and #{strength} attack points"
         puts "What would you like to do?"
     else
         puts "What would you like to do?"
