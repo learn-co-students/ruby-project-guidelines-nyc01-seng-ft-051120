@@ -29,7 +29,7 @@ class CommandLineInterface
 
 
     def main_menu_loop
-        while user_input != "exit"
+        while user_input.downcase != "exit"
             case last_input.to_i
             when 1
                 book_flight
@@ -85,20 +85,17 @@ class CommandLineInterface
 
     def book_flight
         puts "Enter departure city"
-        departure_city = user_input
+        departure_city = user_input.upcase
         puts "Enter arrival city"
-        arrival_city = user_input
+        arrival_city = user_input.capitalize
         puts
         flight = Flight.all.where(departure_city: departure_city, arrival_city: arrival_city)
-        if flight
-            book = Booking.new(passenger_id: @current_user.id, flight_id: flight.first.id)
-            binding.pry
-            book.save
-            puts "You have booked the flight "  
-        else
-            puts "Could not find a flight"
-       end
-       menu
+
+        book = Booking.new(passenger_id: @current_user.id, flight_id: flight.first.id)
+        #binding.pry
+        book.save
+        puts "You have booked the flight "  
+        menu
     end
 
     def see_the_review
@@ -116,7 +113,6 @@ class CommandLineInterface
     def list_of_flight
         puts "Flight booked by you #{current_user.name}"
         current_user.flights.each { |f| puts "#{f.id}--#{f.airline_id}--#{f.date}--#{f.departure_city}--#{f.arrival_city}--#{f.travel_class}--#{f.price}"}
-
         puts "Enter the flight Id you'd like to update"
         if user_input.to_i > 0
             update_flight
@@ -166,7 +162,7 @@ class CommandLineInterface
     private
 
     def user_input
-        @last_input = gets.strip
+        @last_input = gets.strip.capitalize
     end
 
     def current_airline

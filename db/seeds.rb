@@ -25,10 +25,10 @@ fl4 = Flight.create(airline: dt, date: Time.parse("Jan 7 2018 4:19"), departure_
 fl5 = Flight.create(airline: dt, date: Time.parse("Feb 12 2018 3:19"), departure_city: "LA", arrival_city: "Seattle", travel_class: "First", price: 500,)
 fl6 = Flight.create(airline: dt, date: Time.parse("Dec 30 2016 7:19"), departure_city: "LA", arrival_city: "Santa Monica", travel_class: "First", price: 500,)
 fl7 = Flight.create(airline: dt, date: Time.parse("Nov 23 2021 1:32"), departure_city: "LA", arrival_city: "Las Vegas", travel_class: "First", price: 500,)
-fl8 = Flight.create(airline: dt, date: Time.parse("Sep 3 2019 12:19"), departure_city: "Chicago", arrival_city: "Istanbul", travel_class: "First", price: 500,)
-fl9 = Flight.create(airline: dt, date: Time.parse("May 1 2020 3:19"), departure_city: "Chicago", arrival_city: "Bishkek", travel_class: "First", price: 500,)
-fl10 = Flight.create(airline: dt, date: Time.parse("Mar 9 2016 8:19"), departure_city: "Chicago", arrival_city: "Pekin", travel_class: "First", price: 500,)
-fl11 = Flight.create(airline: dt, date: Time.parse("Jul 8 2017 10:19"), departure_city: "Chicago", arrival_city: "Cairo", travel_class: "First", price: 500,)
+fl8 = Flight.create(airline: dt, date: Time.parse("Sep 3 2019 12:19"), departure_city: "DENVER", arrival_city: "Istanbul", travel_class: "First", price: 500,)
+fl9 = Flight.create(airline: dt, date: Time.parse("May 1 2020 3:19"), departure_city: "DENVER", arrival_city: "Bishkek", travel_class: "First", price: 500,)
+fl10 = Flight.create(airline: dt, date: Time.parse("Mar 9 2016 8:19"), departure_city: "DEVVER", arrival_city: "Pekin", travel_class: "First", price: 500,)
+fl11 = Flight.create(airline: dt, date: Time.parse("Jul 8 2017 10:19"), departure_city: "CHICAGO", arrival_city: "Cairo", travel_class: "First", price: 500,)
 
 
 bk1 = Booking.create( passenger: pas1, flight: fl1)
