@@ -1,6 +1,6 @@
 class CommandLineInterface
 
-    attr_reader :last_input, :current_user
+    attr_reader :last_input, :current_user, :current_city
 
     def call
         puts "welcome to our Airline Booking System"
@@ -15,25 +15,22 @@ class CommandLineInterface
     end
     def menu
         puts "Options you would you like to do:" 
-        puts "1. Write a review"
+        puts "1. Find a flight"
         #puts "2. See all the review"
-        puts "3. Book a flight"
+      
         #puts "4. Update a flight"
         #puts "5. Delete a fligh"
+        #puts "6. Write a review"
         
         main_menu_loop
     end
+
+
 
     def main_menu_loop
         while user_input != "exit"
             case last_input.to_i
             when 1
-                write_a_reveiw
-                break
-            when 2
-                see_all_the_review
-                break
-            when 3 
                 find_flight
                 break
             else
@@ -41,6 +38,12 @@ class CommandLineInterface
                  break
             end
         end
+    end
+
+    def check_all_flights
+       Flight.all.map do |f|
+        f.departure_city
+       end.uniq
     end
 
     #def write_a_reveiw
@@ -56,17 +59,21 @@ class CommandLineInterface
     #end
 
     def find_flight
-        puts "Enter destination city"
-        flight = Flight.new
-        flight.destination = user_input
-        
-        flight.save
-        menu
-        #if Flight.departure == flight1 
-       # puts "Enter arrival city"
-       # puts "Select date"
+        puts "Enter departure city" 
+        #flight = Flight.new
+        @current_city = Flight.find_or_create_by(departure_city: user_input)
+       
+        #flight.departure_city = user_input      
+        #puts "Enter arrival city" 
+        #flight.arrival_city = user_input
+        #puts "Select date"
+        #flight.date = user_input
         #puts "Select class"
+        #flight.travel_class = user_input
+        #flight.save
+        menu
     end
+
 
    # def book_a_flight
        # puts "Select one of the flights to book"
@@ -78,5 +85,9 @@ class CommandLineInterface
 
     def user_input
         @last_input = gets.strip
+    end
+
+    def current_city
+
     end
 end
