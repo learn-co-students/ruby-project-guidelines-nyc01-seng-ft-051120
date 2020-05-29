@@ -59,14 +59,27 @@ class CommandLineInterface
     #    end.uniq
     # end
 
+
+   
     def find_flight
         puts "Enter departure city" 
+        departure_city = user_input
+        puts "Enter arrival city"
+        arrival_city = user_input
+        flight = Flight.all.where(departure_city: departure_city, arrival_city: arrival_city)
+        
+        if flight
+            book = Booking.new(passenger_id: @current_user.id, flight_id: flight.first.id)
+            book.save
+            puts book
+        else 
+            puts "Could not find a flight"
+       end
+        
         #flight = Flight.new
-        @current_city = Flight.find_or_create_by(departure_city: user_input)
-        Flight.all.map do |f|
-            f.departure_city == current_city
-            f.departure_city
-        end  
+        #@current_city = Flight.find_or_create_by(departure_city: user_input)
+       
+        
         #flight.departure_city = user_input      
         #puts "Enter arrival city" 
         #flight.arrival_city = user_input
@@ -75,7 +88,7 @@ class CommandLineInterface
         #puts "Select class"
         #flight.travel_class = user_input
         #flight.save
-        menu
+        #menu
     end
 
 
