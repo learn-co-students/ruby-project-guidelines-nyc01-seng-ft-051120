@@ -3,7 +3,7 @@ class CommandLineInterface
     attr_reader :last_input, :current_user, :current_flight
 
     def call
-        puts "welcome to our Airline Booking System"
+        puts "Welcome to our Airline Booking"
         login
         menu
     end
@@ -20,7 +20,7 @@ class CommandLineInterface
         puts "3. Update a flight"
         puts "4. Cancel a flight"
         puts "5. Create a review"
-        puts "6. See all the review"
+        puts "6. See all the reviews"
         puts "7. Update a review and rating"
         puts "8. Delete a review"
         main_menu_loop
@@ -92,8 +92,9 @@ class CommandLineInterface
         flight = Flight.all.where(departure_city: departure_city, arrival_city: arrival_city)
         if flight
             book = Booking.new(passenger_id: @current_user.id, flight_id: flight.first.id)
+            binding.pry
             book.save
-            puts "You have booked the flight "
+            puts "You have booked the flight "  
         else
             puts "Could not find a flight"
        end
