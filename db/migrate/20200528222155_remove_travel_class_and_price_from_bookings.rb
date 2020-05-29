@@ -4,3 +4,4 @@ class RemoveTravelClassAndPriceFromBookings < ActiveRecord::Migration[5.0]
     remove_column :bookings, :price
   end
 end
+  

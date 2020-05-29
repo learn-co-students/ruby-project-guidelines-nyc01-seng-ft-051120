@@ -1,6 +1,6 @@
 class CommandLineInterface
 
-    attr_reader :last_input, :current_user, :current_city
+    attr_reader :last_input, :current_user, :current_flight
 
     def call
         puts "welcome to our Airline Booking System"
@@ -15,12 +15,14 @@ class CommandLineInterface
     end
     def menu
         puts "Options you would you like to do:" 
-        puts "1. Find a flight"
-        puts "2. Update a flight"
-        puts "3. Delete a flight"
-        puts "4. Write a review"
-        puts "5. See all the review"
-        puts "6. Update a review and rating"
+        puts "1. Book a flight"
+        puts "2. List of flights"
+        puts "3. Update a flight"
+        puts "4. Cancel a flight"
+        puts "5. Create a review"
+        puts "6. See all the review"
+        puts "7. Update a review and rating"
+        puts "8. Delete a review"
         main_menu_loop
     end
 
@@ -30,21 +32,28 @@ class CommandLineInterface
         while user_input != "exit"
             case last_input.to_i
             when 1
-                find_flight
+                book_flight
                 break
             when 2
-                update_a_flight
+                list_of_flight
                 break
             when 3
-                delete_a_flight
+                update_flight
+                break
             when 4
-                write_a_review
+                cancel_a_flight
                 break
             when 5
-                see_all_the_review
+                create_a_review
                 break
             when 6
-                update_reviews
+                see_the_review
+                break
+            when 7
+                update_review
+                break
+            when 8
+                delete_review
                 break
             else
                 menu
@@ -53,90 +62,105 @@ class CommandLineInterface
         end
     end
 
-    # def check_all_flights
-    #    Flight.all.map do |f|
-    #     f.departure_city
-    #    end.uniq
-    # end
-
-
    
-    def find_flight
-        puts "Enter departure city" 
-        departure_city = user_input
-        puts "Enter arrival city"
-        arrival_city = user_input
-        flight = Flight.all.where(departure_city: departure_city, arrival_city: arrival_city)
-        
-        if flight
-            book = Booking.new(passenger_id: @current_user.id, flight_id: flight.first.id)
-            book.save
-            puts book
-        else 
-            puts "Could not find a flight"
-       end
-        
-        #flight = Flight.new
-        #@current_city = Flight.find_or_create_by(departure_city: user_input)
-       
-        
-        #flight.departure_city = user_input      
-        #puts "Enter arrival city" 
-        #flight.arrival_city = user_input
-        #puts "Select date"
-        #flight.date = user_input
-        #puts "Select class"
-        #flight.travel_class = user_input
-        #flight.save
-        #menu
-    end
-
-
-    def write_a_review
+    def create_a_review
        puts "please enter your review"
        review = current_user.reviews.build
        review.content = user_input
         puts "please enter your rating"
         review.rating = user_input
-        puts "Please choose from the list"
-        Airline.all.map 
+        puts "Please enter airline name"
+        review.airline = current_airline 
         review.save
         menu
     end
 
-    def see_all_the_review
+    # def make_a_booking
+    #     puts "Enter your location" 
+    #     booking = current_user.bookings.build
+    #     booking.flight = current_flight
+    #     booking.save
+    #     menu
+    # end
+
+    def book_flight
+        puts "Enter departure city"
+        departure_city = user_input
+        puts "Enter arrival city"
+        arrival_city = user_input
+        puts
+        flight = Flight.all.where(departure_city: departure_city, arrival_city: arrival_city)
+        if flight
+            book = Booking.new(passenger_id: @current_user.id, flight_id: flight.first.id)
+            book.save
+            puts "You have booked the flight "
+        else
+            puts "Could not find a flight"
+       end
+       menu
+    end
+
+    def see_the_review
         puts "Review by you #{current_user.name}"
-        current_user.reviews.each { |r| puts "Review Id 16#{r.id} comment #{r.content} rating #{r.rating}"} 
+        current_user.reviews.each { |r| puts "Review Id #{r.id} airline #{r.airline_id} comment #{r.content} rating #{r.rating}"} 
 
         puts "Enter the review ID you'd like to update"
         if user_input.to_i > 0
-            update_review_rating
+            update_review
         else
             menu
         end
     end
 
-    def update_review_rating
-        puts "Loading review and rating #{last_input}..."
-        current_user.reviews.find(review_id: last_input)
-        # current_user.reviews.each do |r| 
-        # binding.pry
-            puts "Enter your updated review"
-            reviews.content = user_input
-            puts "Enter your updated rating"
-            reviews.rating = user_input
-        #     r.save
-       
-        # end
+    def list_of_flight
+        puts "Flight booked by you #{current_user.name}"
+        current_user.flights.each { |f| puts "#{f.id}--#{f.airline_id}--#{f.date}--#{f.departure_city}--#{f.arrival_city}--#{f.travel_class}--#{f.price}"}
+
+        puts "Enter the flight Id you'd like to update"
+        if user_input.to_i > 0
+            update_flight
+        else
+        menu
+        end
     end
 
+    def update_review
+        puts "Loading review #{last_input}..."
+        review = current_user.reviews.find(last_input)
+        puts "Enter your updated rating"
+        review.rating = user_input
+        puts "Enter your updated review"
+        review.content = user_input
+        review.save
+        puts "--#{review.rating}--#{review.content}--"
+        menu
+    end
 
+    def update_flight
+        puts "Loading flight #{last_input}..."
+        flight = current_user.flights.find(last_input)
+        puts "Enter your updated date"
+        flight.date = user_input
+        # puts "Enter your updated review"
+        # review.content = user_input
+        flight.save
+        puts "--#{flight.date}----"
+        menu
+    end
 
-   # def book_a_flight
-       # puts "Select one of the flights to book"
-    #end
+    def delete_review
+        puts "Enter the review ID you'd like to delete"
+        review = current_user.reviews.find(user_input)
+        review.delete
+        menu
+    end
 
-
+    def cancel_a_flight
+        puts "Enter the flight ID you'd like to delete"
+        flight = current_user.flights.find(user_input)
+        flight.delete
+        menu
+    end
 
     private
 
@@ -147,7 +171,9 @@ class CommandLineInterface
     def current_airline
         @current_airline = Airline.find_or_create_by(name: user_input)
     end
-    # def current_city
 
-    # end
-end
+    def current_flight
+        @current_flight = Flight.find_or_create_by(departure_city: user_input)
+    end
+    
+end 
